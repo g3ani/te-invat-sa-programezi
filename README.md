@@ -8,6 +8,8 @@ Lectia 1 : https://youtu.be/heH_iobpico
 
 Lectia 2 : https://youtu.be/_VlSTGluFWk
 
+Lectia 3 : https://youtu.be/nFMlWCQhSYA
+
 Teorie 1 : https://youtu.be/1IUP8nupfXw
 
 Teorie 2 : https://youtu.be/0YitEJmKKDQ
