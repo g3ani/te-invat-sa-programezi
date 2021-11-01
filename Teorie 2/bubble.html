@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Bubble Sort</h1>
+        <input type="text" id="array"/>
+        <button type="button" class="btn btn-primary" onclick="buttonClick()">READ</button>
+        <h3 id="inputedArray">The array you inputed is: []</h3>
+        <h2>The sorting steps are the following:</h2>
+        <table id="stepTable" class="table table-bordered">
+            <thead>
+              <tr id="tableHead">
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+            </tbody>
+          </table>
+    </div>
+</body>
+
+<footer>
+    <script>
+        String.prototype.strip = function() {
+            return this.replace(/\s+/g, '');
+        }
+
+        var arrHistory = [];
+
+        var bubbleSort = function(arr) {
+            arrHistory.push([...arr]);
+            for (var i = 0; i < arr.length-1; i++){   
+                // Last i elements are already in place
+                for (var j = 0; j < arr.length-i-1; j++){
+                    if (arr[j] > arr[j+1]) {
+                        var tmp = arr[j];
+                        arr[j] = arr[j+1];
+                        arr[j+1] = tmp;
+                    }
+                    arrHistory.push([...arr]);
+                }
+            }
+            return arr;
+        }
+
+        var parseArray = function() {
+            var arrElement = document.getElementById("array");
+            var strValue = arrElement.value;
+            var arr = strValue.strip().split(',')
+            .map(elm => Number.parseInt(elm));
+            document.getElementById("inputedArray").innerText = "The array you inputed is: ["+arr+"]";
+            generateTableHead(arr);
+            return arr;
+        }
+
+        var generateTableHead = function(arr) {
+            for(var i = 0; i < arr.length; i++){
+                document.getElementById("tableHead").innerHTML+=`<th>${i}</th>`;
+            }
+        }
+
+        var generateTableRow = function(arr, rowNumber) {
+            var row = ``;
+            for(var i=0; i< arr.length; i++) {
+                row += `<td id="a_${rowNumber}_${i}">${arr[i]}</td>`;
+            }
+
+            return row;
+        }
+
+        var generateTableBody = function() {
+            for(var i = 0; i < arrHistory.length; i++){
+                document.getElementById("tableBody").innerHTML+=`<tr>${generateTableRow(arrHistory[i],i)}</tr>`;
+            }
+        }
+
+        var possibleColors = [
+            "#74b9ff",
+            "#55efc4",
+            "#00b894",
+            "#fdcb6e",
+            "#fab1a0",
+            "#ff7675",
+            "#fd79a8",
+            "#d63031",
+            "#e17055",
+        ]
+
+
+        var resetStuff = function() {
+            arrHistory = [];
+            document.getElementById("tableHead").innerHTML = "";
+            document.getElementById("tableBody").innerHTML = "";
+        }
+
+        var setBackground = function(name, rowNumber) {
+            var elem = document.getElementById(name);
+            elem.style.backgroundColor = possibleColors[(possibleColors.length-1) % rowNumber];
+        }
+
+        var displayDifferences = function () {
+            for(var i = 1; i < arrHistory.length; i++) {
+                for(var j = 0; j < arrHistory[i].length; j++) {
+                    if(arrHistory[i][j] != arrHistory[i-1][j]){
+                        setBackground(`a_${i-1}_${j}`, i);
+                    }
+                }
+            }
+        }
+
+        var buttonClick = function() {
+            resetStuff();
+            var arr = parseArray();
+            var sortedArr = bubbleSort(arr);
+            generateTableBody();
+            displayDifferences();
+            console.log(sortedArr);
+        }
+
+    </script>
+</footer>
+
+</html>
